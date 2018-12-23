@@ -6,6 +6,7 @@ Summary:	Get iostats
 Group:		Monitoring
 License:	MIT
 Source0:	%{name}-%{version}.tar.gz
+Requires:	sysstat
 
 %description
 TBD
