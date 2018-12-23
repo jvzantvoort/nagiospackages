@@ -1,5 +1,5 @@
 Name:		nagios-plugins-iostat
-Version:	0.0.3
+Version:	0.0.4
 Release:	1%{?dist}
 Summary:	Get iostats
 
@@ -27,6 +27,9 @@ TBD
 
 
 %changelog
+* Sun Dec 23 2018 John van Zantvoort <john@vanzantvoort.org> 0.0.4-1
+- added sysstat requirement (john@vanzantvoort.org)
+
 * Sun Dec 23 2018 John van Zantvoort <john@vanzantvoort.org> 0.0.3-1
 - BNC (brain not connected) (john@vanzantvoort.org)
 
