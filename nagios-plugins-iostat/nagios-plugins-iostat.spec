@@ -1,18 +1,14 @@
 Name:		nagios-plugins-iostat
 Version:	0.0.1
 Release:	1%{?dist}
-Summary:	
+Summary:	Get iostats
 
-Group:		
-License:	
-URL:		
-Source0:	
-
-BuildRequires:	
-Requires:	
+Group:		Monitoring
+License:	MIT
+Source0:	%{name}-%{version}.tar.gz
 
 %description
-
+TBD
 
 %prep
 %setup -q
