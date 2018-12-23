@@ -14,11 +14,6 @@ TBD
 %setup -q
 
 
-%build
-%configure
-make %{?_smp_mflags}
-
-
 %install
 %{__mkdir_p} %{buildroot}/%{_libdir}/nagios/plugins
 
