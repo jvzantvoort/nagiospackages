@@ -1,7 +1,7 @@
 %define         appdir      /opt/nagiosmsg
 
 Name:		nagiosmsg
-Version:	0.0.1
+Version:	0.0.2
 Release:	1%{?dist}
 Summary:	Send custom message
 
@@ -52,3 +52,6 @@ done
 %config(noreplace) %{appdir}/etc/*
 
 %changelog
+* Sat Mar 16 2019 John van Zantvoort <john@vanzantvoort.org> 0.0.2-1
+- first version
+
