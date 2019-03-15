@@ -39,7 +39,7 @@ do
 done
 
 pushd docs
-for filen in*
+for filen in *
 do
   %{__install} -m644 $filen %{buildroot}/%{_defaultdocdir}/%{name}/$filen
 done
