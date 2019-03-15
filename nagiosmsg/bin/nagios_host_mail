@@ -1,0 +1,151 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+"""nagios_host_mail - $description
+
+
+Copyright (C) 2018 John van Zantvoort
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+import argparse
+import sys
+import os
+import yaml
+import smtplib
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+try:
+    from jinja2 import Environment, FileSystemLoader, Template
+except ImportError:
+    print("Failed to import jinja2")
+
+SCRIPT_PATH = os.path.abspath(__file__)
+CORE_TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.dirname(SCRIPT_PATH)), "templates")
+CONFIGDIR = os.path.join(os.path.dirname(os.path.dirname(SCRIPT_PATH)), "etc")
+CONFIGFILE = os.path.join(CONFIGDIR, 'nagios_sender.yaml')
+
+TEMPLATE_DIRS = list()
+TEMPLATE_DIRS.append(CORE_TEMPLATE_DIR)
+
+__author__ = "John van Zantvoort"
+__copyright__ = "John van Zantvoort"
+__email__ = "john@vanzantvoort.org"
+__license__ = "MIT"
+__version__ = "1.0.1"
+
+CONFIG = yaml.load(open(CONFIGFILE).read())
+CONFIG_CHAPTER = 'hosts'
+
+# --------------------------------------
+MAIN_CONFIG = CONFIG.get('main')
+
+SENDER_EMAIL = MAIN_CONFIG.get('senderemail')
+TEMPLATES = MAIN_CONFIG.get('templates', {}).get(CONFIG_CHAPTER, {})
+SUBJECT_TEMPLATE = MAIN_CONFIG.get('subject', {}).get(CONFIG_CHAPTER, '')
+
+ARGUMENT_LIST = CONFIG.get(CONFIG_CHAPTER)
+
+DEFINITIONS = dict()
+for k, v in CONFIG.get('parameters').iteritems():
+    DEFINITIONS[k] = v.get('definition')
+# --------------------------------------
+
+
+def genmsg(template_name, kwargs):
+    env = Environment(loader=FileSystemLoader(TEMPLATE_DIRS))
+    return env.get_template(template_name).render(kwargs)
+
+def subject(args):
+    print(SUBJECT_TEMPLATE)
+    templ = Template(SUBJECT_TEMPLATE)
+    return templ.render(args)
+
+def send_mail(**kwargs):
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject(kwargs)
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = kwargs.get('CONTACTEMAIL')
+
+    for name in ['plain', 'html']:
+        if name in TEMPLATES:
+            content = genmsg(TEMPLATES.get(name), kwargs)
+            segment = MIMEText(content, name)
+            msg.attach(segment)
+
+    s = smtplib.SMTP('localhost')
+    try:
+        s.sendmail(SENDER_EMAIL, kwargs.get('CONTACTEMAIL'), msg.as_string())
+    except TypeError as err:
+        print("Sender: %s" % SENDER_EMAIL)
+        print("Receiver: %s" % kwargs.get('CONTACTEMAIL'))
+        print(err)
+    s.quit()
+
+
+def usage():
+    retv = "\n\n  " + SCRIPT_PATH
+    keys = sorted(ARGUMENT_LIST)
+    for field in keys:
+        retv += " --%s \"$%s$\"" % (field.lower(), field)
+    retv += "\n\n"
+    return retv
+
+
+def parse_args(args):
+    """
+    Parse command line parameters
+
+    :param args: command line parameters as list of strings
+    :return: command line parameters as :obj:`argparse.Namespace`
+    """
+    retv = dict()
+    parser = argparse.ArgumentParser(usage=usage())
+
+
+    parser.add_argument(
+        '--version',
+        action='version',
+        version='nagios_host_mail {ver}'.format(ver=__version__))
+
+    for field in ARGUMENT_LIST:
+        definition = DEFINITIONS.get(field)
+        arg = "--" + field.lower()
+        parser.add_argument(arg,
+                help=definition,
+                dest=field)
+
+    opts = vars(parser.parse_args(args))
+
+    for keyn, keyv in opts.items():
+        if keyv is not None:
+            retv[keyn] = keyv
+    return retv
+
+
+def main(args):
+    args = parse_args(args)
+    send_mail(**args)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

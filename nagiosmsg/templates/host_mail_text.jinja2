@@ -1,0 +1,55 @@
+{%- if NOTIFICATIONTYPE    == 'DEFAULT'                        -%}
+{%-   set ackauthor_desc   = 'Acknowledged Author:           ' -%}
+{%-   set ackcomment_desc  = 'Acknowledged Comment:          ' -%}
+{%- elif NOTIFICATIONTYPE  == 'PROBLEM'                        -%}
+{%-   set ackauthor_desc   = 'Acknowledged Author:           ' -%}
+{%-   set ackcomment_desc  = 'Acknowledged Comment:          ' -%}
+{%- elif NOTIFICATIONTYPE  == 'RECOVERY'                       -%}
+{%-   set ackauthor_desc   = 'Acknowledged Author:           ' -%}
+{%-   set ackcomment_desc  = 'Acknowledged Comment:          ' -%}
+{%- elif NOTIFICATIONTYPE  == 'ACKNOWLEDGEMENT'                -%}
+{%-   set ackauthor_desc   = 'Acknowledged Author:           ' -%}
+{%-   set ackcomment_desc  = 'Acknowledged Comment:          ' -%}
+{%- elif NOTIFICATIONTYPE  == 'FLAPPINGSTART'                  -%}
+{%-   set ackauthor_desc   = 'Flapping Author:               ' -%}
+{%-   set ackcomment_desc  = 'Flapping Comment:              ' -%}
+{%- elif NOTIFICATIONTYPE  == 'FLAPPINGSTOP'                   -%}
+{%-   set ackauthor_desc   = 'Flapping Author:               ' -%}
+{%-   set ackcomment_desc  = 'Flapping Comment:              ' -%}
+{%- elif NOTIFICATIONTYPE  == 'FLAPPINGDISABLED'               -%}
+{%-   set ackauthor_desc   = 'Flapping Author:               ' -%}
+{%-   set ackcomment_desc  = 'Flapping Comment:              ' -%}
+{%- elif NOTIFICATIONTYPE  == 'DOWNTIMESTART'                  -%}
+{%-   set ackauthor_desc   = 'Scheduled Downtime by:         ' -%}
+{%-   set ackcomment_desc  = 'Comment for Scheduled Downtime:' -%}
+{%- elif NOTIFICATIONTYPE  == 'DOWNTIMEEND'                    -%}
+{%-   set ackauthor_desc   = 'Scheduled Downtime by:         ' -%}
+{%-   set ackcomment_desc  = 'Comment for Scheduled Downtime:' -%}
+{%- elif NOTIFICATIONTYPE  == 'DOWNTIMECANCELLED'              -%}
+{%-   set ackauthor_desc   = 'Scheduled Downtime by:         ' -%}
+{%-   set ackcomment_desc  = 'Comment for Scheduled Downtime:' -%}
+{%- elif NOTIFICATIONTYPE  == 'CUSTOM'                         -%}
+{%-   set ackauthor_desc   = 'Custom Author:                 ' -%}
+{%-   set ackcomment_desc  = 'Custom Comment:                ' -%}
+{%- endif                                                      -%}
+[{{ NOTIFICATIONTYPE }}] Host: {{ HOSTALIAS }} ({{ HOSTNAME }}) is {{ HOSTSTATE }}.
+
+Alert Notification:             {{ NOTIFICATIONTYPE }}
+Attempt:                        {{ HOSTATTEMPT }}/{{ MAXHOSTATTEMPTS }}
+Host:                           {{ HOSTNAME }} is {{ HOSTSTATE }} for: {{ HOSTDURATION }}
+Hostalias:                      {{ HOSTALIAS }}
+Host Address:                   {{ HOSTADDRESS }}
+Last Check:                     {{ SHORTDATETIME }}
+Status Information:             {{ HOSTOUTPUT }}
+Notified Recipients:            {{ NOTIFICATIONRECIPIENTS }}
+{% if NOTIFICATIONISESCALATED == 0 -%}
+Incident Escalated:             No
+{% elif NOTIFICATIONISESCALATED == 1 -%}
+Incident Escalated:             Yes
+{% endif -%}
+{% if NOTIFICATIONAUTHOR is defined and NOTIFICATIONAUTHOR|length -%}
+{{ ackauthor_desc }} {{ NOTIFICATIONAUTHOR }}
+{% endif -%}
+{% if NOTIFICATIONCOMMENT is defined and NOTIFICATIONCOMMENT|length -%}
+{{ ackcomment_desc }} {{ NOTIFICATIONCOMMENT }}
+{% endif -%}

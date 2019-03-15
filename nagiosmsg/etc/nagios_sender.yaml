@@ -1,0 +1,647 @@
+main:
+  senderemail: SOMEMAILADDRESS
+  templates:
+    hosts:
+      html: host_mail.jinja2
+      plain: host_mail_text.jinja2
+    services:
+      html: service_mail.jinja2
+      plain: service_mail_text.jinja2
+
+  subject:
+    hosts: "monitoring: {{ NOTIFICATIONTYPE }} Host: {{ HOSTALIAS }} ({{ HOSTNAME }}) is {{ HOSTSTATE }}."
+    services: "monitoring: {{ NOTIFICATIONTYPE }} Service: {{ SERVICEDESC }} on Host: {{ HOSTALIAS }} ({{ HOSTNAME }}) is {{ SERVICESTATE }}."
+
+
+services:
+    - CONTACTEMAIL
+    - HOSTADDRESS
+    - HOSTALIAS
+    - HOSTNAME
+    - LONGSERVICEOUTPUT
+    - MAXSERVICEATTEMPTS
+    - NOTIFICATIONAUTHOR
+    - NOTIFICATIONCOMMENT
+    - NOTIFICATIONISESCALATED
+    - NOTIFICATIONRECIPIENTS
+    - NOTIFICATIONTYPE
+    - SERVICEATTEMPT
+    - SERVICEDESC
+    - SERVICEDURATION
+    - SERVICEOUTPUT
+    - SERVICESTATE
+    - SHORTDATETIME
+
+hosts:
+    - CONTACTEMAIL
+    - HOSTADDRESS
+    - HOSTALIAS
+    - HOSTATTEMPT
+    - HOSTDURATION
+    - HOSTNAME
+    - HOSTOUTPUT
+    - HOSTSTATE
+    - MAXHOSTATTEMPTS
+    - NOTIFICATIONAUTHOR
+    - NOTIFICATIONCOMMENT
+    - NOTIFICATIONISESCALATED
+    - NOTIFICATIONRECIPIENTS
+    - NOTIFICATIONTYPE
+    - SHORTDATETIME
+
+parameters:
+  ADMINEMAIL:
+    definition: Global administrative email address. This value is taken from the
+      admin_email directive.
+  ADMINPAGER:
+    definition: Global administrative pager number/address. This value is taken from
+      the admin_pager directive.
+  ARGn:
+    definition: The nth argument passed to the command (notification, event handler,
+      service check, etc.). Nagios supports up to 32 argument macros ($ARG1$ through
+      $ARG32$).
+  COMMANDFILE:
+    definition: The location of the command file.
+  COMMENTDATAFILE:
+    definition: The location of the comment data file.
+  CONTACTADDRESSn:
+    definition: Address of the contact being notified. Each contact can have six different
+      addresses (in addition to email address and pager number). The macros for these
+      addresses are $CONTACTADDRESS1$ - $CONTACTADDRESS6$. This value is taken from
+      the addressx directive in the contact definition.
+  CONTACTALIAS:
+    definition: Long name/description for the contact (i.e. "John Doe") being notified.
+      This value is taken from the alias directive in the contact definition.
+  CONTACTEMAIL:
+    definition: Email address of the contact being notified. This value is taken from
+      the email directive in the contact definition.
+  CONTACTGROUPALIAS:
+    definition: The long name / alias of either 1) the contactgroup name passed as
+      an on-demand macro argument or 2) the primary contactgroup associated with the
+      current contact (if not used in the context of an on-demand macro). This value
+      is taken from the alias directive in the contactgroup definition.
+  CONTACTGROUPMEMBERS:
+    definition: A comma-separated list of all contacts that belong to either 1) the
+      contactgroup name passed as an on-demand macro argument or 2) the primary contactgroup
+      associated with the current contact (if not used in the context of an on-demand
+      macro).
+  CONTACTGROUPNAME:
+    definition: The short name of the contactgroup that this contact is a member of.
+      This value is taken from the contactgroup_name directive in the contactgroup
+      definition. If the contact belongs to more than one contactgroup this macro
+      will contain the name of just one of them.
+  CONTACTGROUPNAMES:
+    definition: A comma separated list of the short names of all the contactgroups
+      that this contact is a member of.
+  CONTACTNAME:
+    definition: Short name for the contact (i.e. "jdoe") that is being notified of
+      a host or service problem. This value is taken from the contact_name directive
+      in the contact definition.
+  CONTACTPAGER:
+    definition: Pager number/address of the contact being notified. This value is
+      taken from the pager directive in the contact definition.
+  DATE:
+    definition: Date stamp (i.e. 10-13-2000). Format of date is determined by date_format
+      directive.
+  DOWNTIMEDATAFILE:
+    definition: The location of the downtime data file.
+  EVENTSTARTTIME:
+    definition: Time stamp in time_t format (seconds since the UNIX epoch) indicating
+      when the Nagios process starting process events (checks, etc.). You can determine
+      the number of seconds that it took for Nagios to startup by subtracting $PROCESSSTARTTIME$
+      from $EVENTSTARTTIME$.
+  HOSTACKAUTHOR:
+    definition: A string containing the name of the user who acknowledged the host
+      problem. This macro is only valid in notifications where the $NOTIFICATIONTYPE$
+      macro is set to "ACKNOWLEDGEMENT".
+  HOSTACKAUTHORALIAS:
+    definition: A string containing the alias of the contact (if applicable) who acknowledged
+      the host problem. This macro is only valid in notifications where the $NOTIFICATIONTYPE$
+      macro is set to "ACKNOWLEDGEMENT".
+  HOSTACKAUTHORNAME:
+    definition: A string containing the short name of the contact (if applicable)
+      who acknowledged the host problem. This macro is only valid in notifications
+      where the $NOTIFICATIONTYPE$ macro is set to "ACKNOWLEDGEMENT".
+  HOSTACKCOMMENT:
+    definition: A string containing the acknowledgement comment that was entered by
+      the user who acknowledged the host problem. This macro is only valid in notifications
+      where the $NOTIFICATIONTYPE$ macro is set to "ACKNOWLEDGEMENT".
+  HOSTACTIONURL:
+    definition: Action URL for the host. This macro may contain other macros (e.g.
+      $HOSTNAME$), which can be useful when you want to pass the host name to a web
+      page.
+  HOSTADDRESS:
+    definition: Address of the host. This value is taken from the address directive
+      in the host definition.
+  HOSTALIAS:
+    definition: Long name/description for the host. This value is taken from the alias
+      directive in the host definition.
+  HOSTATTEMPT:
+    definition: The number of the current host check retry. For instance, if this
+      is the second time that the host is being rechecked, this will be the number
+      two. Current attempt number is really only useful when writing host event handlers
+      for "soft" states that take a specific action based on the host retry number.
+  HOSTCHECKCOMMAND:
+    definition: This macro contains the name of the command (along with any arguments
+      passed to it) used to perform the host check.
+  HOSTDISPLAYNAME:
+    definition: An alternate display name for the host. This value is taken from the
+      display_name directive in the host definition.
+  HOSTDOWNTIME:
+    definition: A number indicating the current "downtime depth" for the host. If
+      this host is currently in a period of scheduled downtime, the value will be
+      greater than zero. If the host is not currently in a period of downtime, this
+      value will be zero.
+  HOSTDURATION:
+    definition: A string indicating the amount of time that the host has spent in
+      its current state. Format is "XXh YYm ZZs", indicating hours, minutes and seconds.
+  HOSTDURATIONSEC:
+    definition: A number indicating the number of seconds that the host has spent
+      in its current state.
+  HOSTEVENTID:
+    definition: A globally unique number associated with the host's current state.
+      Every time a host (or service) experiences a state change, a global event ID
+      number is incremented by one (1). If a host has experienced no state changes,
+      this macro will be set to zero (0).
+  HOSTEXECUTIONTIME:
+    definition: A (floating point) number indicating the number of seconds that the
+      host check took to execute (i.e. the amount of time the check was executing).
+  HOSTGROUPACTIONURL:
+    definition: The action URL associated with either 1) the hostgroup name passed
+      as an on-demand macro argument or 2) the primary hostgroup associated with the
+      current host (if not used in the context of an on-demand macro). This value
+      is taken from the action_url directive in the hostgroup definition.
+  HOSTGROUPALIAS:
+    definition: The long name / alias of either 1) the hostgroup name passed as an
+      on-demand macro argument or 2) the primary hostgroup associated with the current
+      host (if not used in the context of an on-demand macro). This value is taken
+      from the alias directive in the hostgroup definition.
+  HOSTGROUPMEMBERS:
+    definition: A comma-separated list of all hosts that belong to either 1) the hostgroup
+      name passed as an on-demand macro argument or 2) the primary hostgroup associated
+      with the current host (if not used in the context of an on-demand macro).
+  HOSTGROUPNAME:
+    definition: The short name of the hostgroup that this host belongs to. This value
+      is taken from the hostgroup_name directive in the hostgroup definition. If the
+      host belongs to more than one hostgroup this macro will contain the name of
+      just one of them.
+  HOSTGROUPNAMES:
+    definition: A comma separated list of the short names of all the hostgroups that
+      this host belongs to.
+  HOSTGROUPNOTES:
+    definition: The notes associated with either 1) the hostgroup name passed as an
+      on-demand macro argument or 2) the primary hostgroup associated with the current
+      host (if not used in the context of an on-demand macro). This value is taken
+      from the notes directive in the hostgroup definition.
+  HOSTGROUPNOTESURL:
+    definition: The notes URL associated with either 1) the hostgroup name passed
+      as an on-demand macro argument or 2) the primary hostgroup associated with the
+      current host (if not used in the context of an on-demand macro). This value
+      is taken from the notes_url directive in the hostgroup definition.
+  HOSTLATENCY:
+    definition: A (floating point) number indicating the number of seconds that a
+      scheduled host check lagged behind its scheduled check time. For instance, if
+      a check was scheduled for 03:14:15 and it didn't get executed until 03:14:17,
+      there would be a check latency of 2.0 seconds. On-demand host checks have a
+      latency of zero seconds.
+  HOSTNAME:
+    definition: Short name for the host (i.e. "biglinuxbox"). This value is taken
+      from the host_name directive in the host definition.
+  HOSTNOTES:
+    definition: Notes for the host. This macro may contain other macros (e.g. $HOSTNAME$),
+      which can be useful when you want to host-specific status information, etc.
+      in the description.
+  HOSTNOTESURL:
+    definition: Notes URL for the host. This macro may contain other macros (e.g.
+      $HOSTNAME$), which can be useful when you want to pass the host name to a web
+      page.
+  HOSTNOTIFICATIONID:
+    definition: A unique number identifying a host notification. Notification ID numbers
+      are unique across both hosts and service notifications, so you could potentially
+      use this unique number as a primary key in a notification database. Notification
+      ID numbers should remain unique across restarts of the Nagios process, so long
+      as you have state retention enabled. The notification ID number is incremented
+      by one (1) each time a new host notification is sent out, and regardless of
+      how many contacts are notified.
+  HOSTNOTIFICATIONNUMBER:
+    definition: The current notification number for the host. The notification number
+      increases by one (1) each time a new notification is sent out for the host (except
+      for acknowledgements). The notification number is reset to 0 when the host recovers
+      (after the recovery notification has gone out). Acknowledgements do not cause
+      the notification number to increase, nor do notifications dealing with flap
+      detection or scheduled downtime.
+  HOSTOUTPUT:
+    definition: The first line of text output from the last host check (i.e. "Ping
+      OK").
+  HOSTPERCENTCHANGE:
+    definition: A (floating point) number indicating the percent state change the
+      host has undergone. Percent state change is used by the flap detection algorithm.
+  HOSTPERFDATA:
+    definition: This macro contains any performance data that may have been returned
+      by the last host check.
+  HOSTPERFDATAFILE:
+    definition: The location of the host performance data file (if defined).
+  HOSTPROBLEMID:
+    definition: A globally unique number associated with the host's current problem
+      state. Every time a host (or service) transitions from an UP or OK state to
+      a problem state, a global problem ID number is incremented by one (1). This
+      macro will be non-zero if the host is currently a non-UP state. State transitions
+      between non-UP states (e.g. DOWN to UNREACHABLE) do not cause this problem id
+      to increase. If the host is currently in an UP state, this macro will be set
+      to zero (0). Combined with event handlers, this macro could be used to automatically
+      open trouble tickets when hosts first enter a problem state.
+  HOSTSTATE:
+    definition: A string indicating the current state of the host ("UP", "DOWN", or
+      "UNREACHABLE").
+  HOSTSTATEID:
+    definition: 'A number that corresponds to the current state of the host: 0=UP,
+      1=DOWN, 2=UNREACHABLE.'
+  HOSTSTATETYPE:
+    definition: A string indicating the state type for the current host check ("HARD"
+      or "SOFT"). Soft states occur when host checks return a non-OK (non-UP) state
+      and are in the process of being retried. Hard states result when host checks
+      have been checked a specified maximum number of times.
+  ISVALIDTIME:
+    definition: 'This is a special on-demand macro that returns a 1 or 0 depending
+      on whether or not a particular time is valid within a specified timeperiod.
+      There are two ways of using this macro: $ISVALIDTIME:24x7$ will be set to "1"
+      if the current time is valid within the "24x7" timeperiod. If not, it will be
+      set to "0". $ISVALIDTIME:24x7:timestamp$ will be set to "1" if the time specified
+      by the "timestamp" argument (which must be in time_t format) is valid within
+      the "24x7" timeperiod. If not, it will be set to "0".'
+  LASTHOSTCHECK:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which a check of the host was last performed.
+  LASTHOSTDOWN:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the host was last detected as being in a DOWN state.
+  LASTHOSTEVENTID:
+    definition: The previous (globally unique) event number that was given to the
+      host.
+  LASTHOSTPROBLEMID:
+    definition: The previous (globally unique) problem number that was given to the
+      host. Combined with event handlers, this macro could be used for automatically
+      closing trouble tickets, etc. when a host recovers to an UP state.
+  LASTHOSTSTATE:
+    definition: A string indicating the last state of the host ("UP", "DOWN", or "UNREACHABLE").
+  LASTHOSTSTATECHANGE:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time the host last changed state.
+  LASTHOSTSTATEID:
+    definition: 'A number that corresponds to the last state of the host: 0=UP, 1=DOWN,
+      2=UNREACHABLE.'
+  LASTHOSTUNREACHABLE:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the host was last detected as being in an UNREACHABLE
+      state.
+  LASTHOSTUP:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the host was last detected as being in an UP state.
+  LASTSERVICECHECK:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which a check of the service was last performed.
+  LASTSERVICECRITICAL:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the service was last detected as being in a CRITICAL
+      state.
+  LASTSERVICEEVENTID:
+    definition: The previous (globally unique) event number that given to the service.
+  LASTSERVICEOK:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the service was last detected as being in an OK
+      state.
+  LASTSERVICEPROBLEMID:
+    definition: The previous (globally unique) problem number that was given to the
+      service. Combined with event handlers, this macro could be used for automatically
+      closing trouble tickets, etc. when a service recovers to an OK state.
+  LASTSERVICESTATE:
+    definition: A string indicating the last state of the service ("OK", "WARNING",
+      "UNKNOWN", or "CRITICAL").
+  LASTSERVICESTATECHANGE:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time the service last changed state.
+  LASTSERVICESTATEID:
+    definition: 'A number that corresponds to the last state of the service: 0=OK,
+      1=WARNING, 2=CRITICAL, 3=UNKNOWN.'
+  LASTSERVICEUNKNOWN:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the service was last detected as being in an UNKNOWN
+      state.
+  LASTSERVICEWARNING:
+    definition: This is a timestamp in time_t format (seconds since the UNIX epoch)
+      indicating the time at which the service was last detected as being in a WARNING
+      state.
+  LOGFILE:
+    definition: The location of the log file.
+  LONGDATETIME:
+    definition: Current date/time stamp (i.e. Fri Oct 13 00:30:28 CDT 2000). Format
+      of date is determined by date_format directive.
+  LONGHOSTOUTPUT:
+    definition: The full text output (aside from the first line) from the last host
+      check.
+  LONGSERVICEOUTPUT:
+    definition: The full text output (aside from the first line) from the last service
+      check.
+  MAINCONFIGFILE:
+    definition: The location of the main config file.
+  MAXHOSTATTEMPTS:
+    definition: The max check attempts as defined for the current host. Useful when
+      writing host event handlers for "soft" states that take a specific action based
+      on the host retry number.
+  MAXSERVICEATTEMPTS:
+    definition: The max check attempts as defined for the current service. Useful
+      when writing host event handlers for "soft" states that take a specific action
+      based on the service retry number.
+  NEXTVALIDTIME:
+    definition: 'This is a special on-demand macro that returns the next valid time
+      (in time_t format) for a specified timeperiod. There are two ways of using this
+      macro: $NEXTVALIDTIME:24x7$ will return the next valid time - from and including
+      the current time - in the "24x7" timeperiod.  $NEXTVALIDTIME:24x7:timestamp$
+      will return the next valid time - from and including the time specified by the
+      "timestamp" argument (which must be specified in time_t format) - in the "24x7"
+      timeperiod.  If a next valid time cannot be found in the specified timeperiod,
+      the macro will be set to "0".'
+  NOTIFICATIONAUTHOR:
+    definition: A string containing the name of the user who authored the notification.
+      If the $NOTIFICATIONTYPE$ macro is set to "DOWNTIMESTART" or "DOWNTIMEEND",
+      this will be the name of the user who scheduled downtime for the host or service.
+      If the $NOTIFICATIONTYPE$ macro is "ACKNOWLEDGEMENT", this will be the name
+      of the user who acknowledged the host or service problem. If the $NOTIFICATIONTYPE$
+      macro is "CUSTOM", this will be name of the user who initated the custom host
+      or service notification.
+  NOTIFICATIONAUTHORALIAS:
+    definition: A string containing the alias of the contact (if applicable) specified
+      in the $NOTIFICATIONAUTHOR$ macro.
+  NOTIFICATIONAUTHORNAME:
+    definition: A string containing the short name of the contact (if applicable)
+      specified in the $NOTIFICATIONAUTHOR$ macro.
+  NOTIFICATIONCOMMENT:
+    definition: A string containing the comment that was entered by the notification
+      author. If the $NOTIFICATIONTYPE$ macro is set to "DOWNTIMESTART" or "DOWNTIMEEND",
+      this will be the comment entered by the user who scheduled downtime for the
+      host or service. If the $NOTIFICATIONTYPE$ macro is "ACKNOWLEDGEMENT", this
+      will be the comment entered by the user who acknowledged the host or service
+      problem. If the $NOTIFICATIONTYPE$ macro is "CUSTOM", this will be comment entered
+      by the user who initated the custom host or service notification.
+  NOTIFICATIONISESCALATED:
+    definition: An integer indicating whether this was sent to normal contacts for
+      the host or service or if it was escalated. 0 = Normal (non-escalated) notification
+      , 1 = Escalated notification.
+  NOTIFICATIONRECIPIENTS:
+    definition: A comma-separated list of the short names of all contacts that are
+      being notified about the host or service.
+  NOTIFICATIONTYPE:
+    definition: A string identifying the type of notification that is being sent ("PROBLEM",
+      "RECOVERY", "ACKNOWLEDGEMENT", "FLAPPINGSTART", "FLAPPINGSTOP", "FLAPPINGDISABLED",
+      "DOWNTIMESTART", "DOWNTIMEEND", or "DOWNTIMECANCELLED").
+  OBJECTCACHEFILE:
+    definition: The location of the object cache file.
+  PROCESSSTARTTIME:
+    definition: Time stamp in time_t format (seconds since the UNIX epoch) indicating
+      when the Nagios process was last (re)started. You can determine the number of
+      seconds that Nagios has been running (since it was last restarted) by subtracting
+      $PROCESSSTARTTIME$ from $TIMET$.
+  RESOURCEFILE:
+    definition: The location of the resource file.
+  RETENTIONDATAFILE:
+    definition: The location of the retention data file.
+  SERVICEACKAUTHOR:
+    definition: A string containing the name of the user who acknowledged the service
+      problem. This macro is only valid in notifications where the $NOTIFICATIONTYPE$
+      macro is set to "ACKNOWLEDGEMENT".
+  SERVICEACKAUTHORALIAS:
+    definition: A string containing the alias of the contact (if applicable) who acknowledged
+      the service problem. This macro is only valid in notifications where the $NOTIFICATIONTYPE$
+      macro is set to "ACKNOWLEDGEMENT".
+  SERVICEACKAUTHORNAME:
+    definition: A string containing the short name of the contact (if applicable)
+      who acknowledged the service problem. This macro is only valid in notifications
+      where the $NOTIFICATIONTYPE$ macro is set to "ACKNOWLEDGEMENT".
+  SERVICEACKCOMMENT:
+    definition: A string containing the acknowledgement comment that was entered by
+      the user who acknowledged the service problem. This macro is only valid in notifications
+      where the $NOTIFICATIONTYPE$ macro is set to "ACKNOWLEDGEMENT".
+  SERVICEACTIONURL:
+    definition: Action URL for the service. This macro may contain other macros (e.g.
+      $HOSTNAME$ or $SERVICEDESC$), which can be useful when you want to pass the
+      service name to a web page.
+  SERVICEATTEMPT:
+    definition: The number of the current service check retry. For instance, if this
+      is the second time that the service is being rechecked, this will be the number
+      two. Current attempt number is really only useful when writing service event
+      handlers for "soft" states that take a specific action based on the service
+      retry number.
+  SERVICECHECKCOMMAND:
+    definition: This macro contains the name of the command (along with any arguments
+      passed to it) used to perform the service check.
+  SERVICEDESC:
+    definition: The long name/description of the service (i.e. "Main Website"). This
+      value is taken from the service_description directive of the service definition.
+  SERVICEDISPLAYNAME:
+    definition: An alternate display name for the service. This value is taken from
+      the display_name directive in the service definition.
+  SERVICEDOWNTIME:
+    definition: A number indicating the current "downtime depth" for the service.
+      If this service is currently in a period of scheduled downtime, the value will
+      be greater than zero. If the service is not currently in a period of downtime,
+      this value will be zero.
+  SERVICEDURATION:
+    definition: A string indicating the amount of time that the service has spent
+      in its current state. Format is "XXh YYm ZZs", indicating hours, minutes and
+      seconds.
+  SERVICEDURATIONSEC:
+    definition: A number indicating the number of seconds that the service has spent
+      in its current state.
+  SERVICEEVENTID:
+    definition: A globally unique number associated with the service's current state.
+      Every time a a service (or host) experiences a state change, a global event
+      ID number is incremented by one (1). If a service has experienced no state changes,
+      this macro will be set to zero (0).
+  SERVICEEXECUTIONTIME:
+    definition: A (floating point) number indicating the number of seconds that the
+      service check took to execute (i.e. the amount of time the check was executing).
+  SERVICEGROUPALIAS:
+    definition: The long name / alias of either 1) the servicegroup name passed as
+      an on-demand macro argument or 2) the primary servicegroup associated with the
+      current service (if not used in the context of an on-demand macro). This value
+      is taken from the alias directive in the servicegroup definition.
+  SERVICEGROUPMEMBERS:
+    definition: A comma-separated list of all services that belong to either 1) the
+      servicegroup name passed as an on-demand macro argument or 2) the primary servicegroup
+      associated with the current service (if not used in the context of an on-demand
+      macro).
+  SERVICEGROUPNAME:
+    definition: The short name of the servicegroup that this service belongs to. This
+      value is taken from the servicegroup_name directive in the servicegroup definition.
+      If the service belongs to more than one servicegroup this macro will contain
+      the name of just one of them.
+  SERVICEGROUPNAMES:
+    definition: A comma separated list of the short names of all the servicegroups
+      that this service belongs to.
+  SERVICEGROUPNOTES:
+    definition: The notes associated with either 1) the servicegroup name passed as
+      an on-demand macro argument or 2) the primary servicegroup associated with the
+      current service (if not used in the context of an on-demand macro). This value
+      is taken from the notes directive in the servicegroup definition.
+  SERVICEGROUPNOTESURL:
+    definition: The notes URL associated with either 1) the servicegroup name passed
+      as an on-demand macro argument or 2) the primary servicegroup associated with
+      the current service (if not used in the context of an on-demand macro). This
+      value is taken from the notes_url directive in the servicegroup definition.
+  SERVICEISVOLATILE:
+    definition: 'Indicates whether the service is marked as being volatile or not:
+      0 = not volatile, 1 = volatile.'
+  SERVICELATENCY:
+    definition: A (floating point) number indicating the number of seconds that a
+      scheduled service check lagged behind its scheduled check time. For instance,
+      if a check was scheduled for 03:14:15 and it didn't get executed until 03:14:17,
+      there would be a check latency of 2.0 seconds.
+  SERVICENOTES:
+    definition: Notes for the service. This macro may contain other macros (e.g. $HOSTNAME$
+      or $SERVICESTATE$), which can be useful when you want to service-specific status
+      information, etc. in the description
+  SERVICENOTESURL:
+    definition: Notes URL for the service. This macro may contain other macros (e.g.
+      $HOSTNAME$ or $SERVICEDESC$), which can be useful when you want to pass the
+      service name to a web page.
+  SERVICENOTIFICATIONID:
+    definition: A unique number identifying a service notification. Notification ID
+      numbers are unique across both hosts and service notifications, so you could
+      potentially use this unique number as a primary key in a notification database.
+      Notification ID numbers should remain unique across restarts of the Nagios process,
+      so long as you have state retention enabled. The notification ID number is incremented
+      by one (1) each time a new service notification is sent out, and regardless
+      of how many contacts are notified.
+  SERVICENOTIFICATIONNUMBER:
+    definition: The current notification number for the service. The notification
+      number increases by one (1) each time a new notification is sent out for the
+      service (except for acknowledgements). The notification number is reset to 0
+      when the service recovers (after the recovery notification has gone out). Acknowledgements
+      do not cause the notification number to increase, nor do notifications dealing
+      with flap detection or scheduled downtime.
+  SERVICEOUTPUT:
+    definition: The first line of text output from the last service check (i.e. "Ping
+      OK").
+  SERVICEPERCENTCHANGE:
+    definition: A (floating point) number indicating the percent state change the
+      service has undergone. Percent state change is used by the flap detection algorithm.
+  SERVICEPERFDATA:
+    definition: This macro contains any performance data that may have been returned
+      by the last service check.
+  SERVICEPERFDATAFILE:
+    definition: The location of the service performance data file (if defined).
+  SERVICEPROBLEMID:
+    definition: A globally unique number associated with the service's current problem
+      state. Every time a service (or host) transitions from an OK or UP state to
+      a problem state, a global problem ID number is incremented by one (1). This
+      macro will be non-zero if the service is currently a non-OK state. State transitions
+      between non-OK states (e.g. WARNING to CRITICAL) do not cause this problem id
+      to increase. If the service is currently in an OK state, this macro will be
+      set to zero (0). Combined with event handlers, this macro could be used to automatically
+      open trouble tickets when services first enter a problem state.
+  SERVICESTATE:
+    definition: A string indicating the current state of the service ("OK", "WARNING",
+      "UNKNOWN", or "CRITICAL").
+  SERVICESTATEID:
+    definition: 'A number that corresponds to the current state of the service: 0=OK,
+      1=WARNING, 2=CRITICAL, 3=UNKNOWN.'
+  SERVICESTATETYPE:
+    definition: A string indicating the state type for the current service check ("HARD"
+      or "SOFT"). Soft states occur when service checks return a non-OK state and
+      are in the process of being retried. Hard states result when service checks
+      have been checked a specified maximum number of times.
+  SHORTDATETIME:
+    definition: Current date/time stamp (i.e. 10-13-2000 00:30:28). Format of date
+      is determined by date_format directive.
+  STATUSDATAFILE:
+    definition: The location of the status data file.
+  TEMPFILE:
+    definition: The location of the temp file.
+  TEMPPATH:
+    definition: The directory specified by the temp path variable.
+  TIME:
+    definition: Current time stamp (i.e. 00:30:28).
+  TIMET:
+    definition: Current time stamp in time_t format (seconds since the UNIX epoch).
+  TOTALHOSTPROBLEMS:
+    definition: This macro reflects the total number of hosts that are currently either
+      in a DOWN or an UNREACHABLE state.
+  TOTALHOSTPROBLEMSUNHANDLED:
+    definition: This macro reflects the total number of hosts that are currently either
+      in a DOWN or an UNREACHABLE state that are not currently being "handled". Unhandled
+      host problems are those that are not acknowledged, are not currently in scheduled
+      downtime, and for which checks are currently enabled.
+  TOTALHOSTSDOWN:
+    definition: This macro reflects the total number of hosts that are currently in
+      a DOWN state.
+  TOTALHOSTSDOWNUNHANDLED:
+    definition: This macro reflects the total number of hosts that are currently in
+      a DOWN state that are not currently being "handled". Unhandled host problems
+      are those that are not acknowledged, are not currently in scheduled downtime,
+      and for which checks are currently enabled.
+  TOTALHOSTSERVICES:
+    definition: The total number of services associated with the host.
+  TOTALHOSTSERVICESCRITICAL:
+    definition: The total number of services associated with the host that are in
+      a CRITICAL state.
+  TOTALHOSTSERVICESOK:
+    definition: The total number of services associated with the host that are in
+      an OK state.
+  TOTALHOSTSERVICESUNKNOWN:
+    definition: The total number of services associated with the host that are in
+      an UNKNOWN state.
+  TOTALHOSTSERVICESWARNING:
+    definition: The total number of services associated with the host that are in
+      a WARNING state.
+  TOTALHOSTSUNREACHABLE:
+    definition: This macro reflects the total number of hosts that are currently in
+      an UNREACHABLE state.
+  TOTALHOSTSUNREACHABLEUNHANDLED:
+    definition: This macro reflects the total number of hosts that are currently in
+      an UNREACHABLE state that are not currently being "handled". Unhandled host
+      problems are those that are not acknowledged, are not currently in scheduled
+      downtime, and for which checks are currently enabled.
+  TOTALHOSTSUP:
+    definition: This macro reflects the total number of hosts that are currently in
+      an UP state.
+  TOTALSERVICEPROBLEMS:
+    definition: This macro reflects the total number of services that are currently
+      either in a WARNING, CRITICAL, or UNKNOWN state.
+  TOTALSERVICEPROBLEMSUNHANDLED:
+    definition: This macro reflects the total number of services that are currently
+      either in a WARNING, CRITICAL, or UNKNOWN state that are not currently being
+      "handled". Unhandled services problems are those that are not acknowledged,
+      are not currently in scheduled downtime, and for which checks are currently
+      enabled.
+  TOTALSERVICESCRITICAL:
+    definition: This macro reflects the total number of services that are currently
+      in a CRITICAL state.
+  TOTALSERVICESCRITICALUNHANDLED:
+    definition: This macro reflects the total number of services that are currently
+      in a CRITICAL state that are not currently being "handled". Unhandled services
+      problems are those that are not acknowledged, are not currently in scheduled
+      downtime, and for which checks are currently enabled.
+  TOTALSERVICESOK:
+    definition: This macro reflects the total number of services that are currently
+      in an OK state.
+  TOTALSERVICESUNKNOWN:
+    definition: This macro reflects the total number of services that are currently
+      in an UNKNOWN state.
+  TOTALSERVICESUNKNOWNUNHANDLED:
+    definition: This macro reflects the total number of services that are currently
+      in an UNKNOWN state that are not currently being "handled". Unhandled services
+      problems are those that are not acknowledged, are not currently in scheduled
+      downtime, and for which checks are currently enabled.
+  TOTALSERVICESWARNING:
+    definition: This macro reflects the total number of services that are currently
+      in a WARNING state.
+  TOTALSERVICESWARNINGUNHANDLED:
+    definition: This macro reflects the total number of services that are currently
+      in a WARNING state that are not currently being "handled". Unhandled services
+      problems are those that are not acknowledged, are not currently in scheduled
+      downtime, and for which checks are currently enabled.
+  USERn:
+    definition: The nth user-definable macro. User macros can be defined in one or
+      more resource files. Nagios supports up to 256 user macros ($USER1$ through
+      $USER256$).
+
