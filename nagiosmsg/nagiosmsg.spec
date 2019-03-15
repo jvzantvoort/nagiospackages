@@ -23,6 +23,7 @@ Python version of a set of php scripts (https://github.com/heiniha/Nagios-Respon
 %install
 
 %{__mkdir_p} %{buildroot}/%{appdir}/bin
+%{__mkdir_p} %{buildroot}/%{appdir}/etc
 %{__mkdir_p} %{buildroot}/%{appdir}/templates
 %{__mkdir_p} %{buildroot}/%{appdir}/
 %{__mkdir_p} %{buildroot}/%{_defaultdocdir}/%{name}
